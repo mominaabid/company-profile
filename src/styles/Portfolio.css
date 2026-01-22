@@ -1,33 +1,18 @@
-.scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        
-        .fade-in-section {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+/* Remove heavy dark-theme scrollbar hiding if not needed, or keep */
 
-        .fade-in-section.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
+/* Smoother section entrance (optional - add to elements) */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
 
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-        .animate-fadeInUp {
-          animation: fadeInUp 0.3s ease-out forwards;
-        }
+/* You can add these if you use them in components */
+.bg-gradient-hero {
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.3));
+}
