@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/footer';
+import { ArrowRight, Star } from 'lucide-react';
 
 const API_BASE_URL = 'https://backendvideography.vercel.app/api';
 
@@ -41,14 +42,12 @@ const Projects: React.FC = () => {
     try {
       setLoading(true);
 
-      // Fetch hero section data
       const heroResponse = await fetch(`${API_BASE_URL}/portfolio-hero/active/`);
       if (heroResponse.ok) {
         const heroJson = await heroResponse.json();
         setHeroData(heroJson);
       }
 
-      // Fetch projects data
       const projectsResponse = await fetch(`${API_BASE_URL}/projects/`);
       if (projectsResponse.ok) {
         const projectsJson = await projectsResponse.json();
@@ -58,7 +57,7 @@ const Projects: React.FC = () => {
       setLoading(false);
     } catch (err) {
       console.error('Error fetching data:', err);
-      setError('Failed to fetch data from backend.');
+      setError('Failed to load projects. Please try again later.');
       setLoading(false);
     }
   };
@@ -67,10 +66,10 @@ const Projects: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] flex items-center justify-center text-[#e9f1ff]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <div className="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-[#7c3aed] mx-auto mb-6"></div>
+            <p className="text-xl text-[#cbd6ea]">Loading projects...</p>
           </div>
         </div>
         <Footer />
@@ -82,14 +81,14 @@ const Projects: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-red-500 mb-4">{error}</p>
+        <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] flex items-center justify-center text-[#e9f1ff]">
+          <div className="text-center px-4">
+            <p className="text-xl text-red-400 mb-6">{error}</p>
             <button
               onClick={fetchData}
-              className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+              className="px-8 py-4 bg-[#7c3aed] text-[#0b0f16] rounded-xl font-medium hover:bg-[#8b4bff] transition shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:shadow-[0_0_30px_rgba(124,58,237,0.6)]"
             >
-              Retry
+              Try Again
             </button>
           </div>
         </div>
@@ -99,53 +98,56 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] text-[#e9f1ff]">
       <Header />
 
-      <div className="bg-gray-900 text-white min-h-screen">
-        {/* ---------------- HERO SECTION ---------------- */}
-        {heroData && (
-          <div className="relative h-96 bg-black overflow-hidden">
-            {heroData.media_type === 'video' ? (
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-              >
-                <source src={heroData.media_url} type="video/mp4" />
-              </video>
-            ) : (
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroData.media_url})` }}
-              />
-            )}
+      {/* Hero Section */}
+      {heroData && (
+        <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+          {heroData.media_type === 'video' ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={heroData.media_url} type="video/mp4" />
+            </video>
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${heroData.media_url})` }}
+            />
+          )}
 
-            <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-              <div className="text-center px-4">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  {heroData.title}
-                </h1>
-                <p className="text-lg md:text-xl mb-6">{heroData.subtitle}</p>
-                <button className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition">
-                  {heroData.button_text}
-                </button>
-              </div>
-            </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f16]/70 via-[#0b0f16]/50 to-[#070a10]/90" />
+
+          <div className="relative z-10 text-center px-6 max-w-5xl">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold leading-tight mb-6">
+              {heroData.title}
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-[#cbd6ea] mb-10 max-w-3xl mx-auto">
+              {heroData.subtitle}
+            </p>
+            <button className="inline-flex items-center gap-3 px-8 py-5 bg-[#7c3aed] text-[#0b0f16] rounded-xl font-medium hover:bg-[#8b4bff] transition shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_35px_rgba(124,58,237,0.6)]">
+              {heroData.button_text}
+              <ArrowRight className="w-6 h-6" />
+            </button>
           </div>
-        )}
+        </section>
+      )}
 
-        {/* ---------------- PROJECTS SECTION ---------------- */}
-        <div className="container mx-auto py-12 px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 text-white">
-            Projects
+      {/* Projects Grid */}
+      <section className="py-20 md:py-24 px-4 border-t border-[#2a2f3a]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
+            Our <span className="text-[#7c3aed]">Work</span>
           </h2>
 
           {projects.length === 0 ? (
-            <div className="text-center text-gray-400 py-12">
-              <p>No projects available.</p>
+            <div className="text-center py-20 text-[#cbd6ea] text-xl">
+              No projects available at the moment.
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -153,51 +155,55 @@ const Projects: React.FC = () => {
                 <Link
                   key={project.id}
                   to={`/projects/${project.id}`}
-                  className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300"
+                  className="group relative rounded-2xl overflow-hidden bg-[#0f1520] border border-[#2a2f3a] hover:border-[#7c3aed] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)] transition-all duration-500 transform hover:-translate-y-2"
                 >
-                  <div className="relative h-48 bg-gray-700">
+                  <div className="relative h-56 overflow-hidden">
                     {project.media_type === 'video' ? (
                       <video
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         muted
-                        playsInline
                         loop
+                        playsInline
                       >
                         <source src={project.media_url} type="video/mp4" />
                       </video>
                     ) : (
                       <img
-                        src={project.media_url}
+                        src={project.thumbnail_url || project.media_url}
                         alt={project.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     )}
 
                     {project.is_featured && (
-                      <span className="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute top-4 right-4 flex items-center gap-2 bg-[#7c3aed]/90 text-[#0b0f16] text-xs font-medium px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(124,58,237,0.5)]">
+                        <Star className="w-4 h-4 fill-current" />
                         Featured
-                      </span>
+                      </div>
                     )}
                   </div>
 
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2 text-white">
+                  <div className="p-7">
+                    <h3 className="text-2xl font-bold mb-3 group-hover:text-[#7c3aed] transition-colors">
                       {project.title}
                     </h3>
+
                     {project.client && (
-                      <p className="text-sm text-purple-400 mb-2">
-                        Client: {project.client}
+                      <p className="text-sm text-[#7c3aed] mb-4">
+                        {project.client}
                       </p>
                     )}
-                    <p className="text-gray-400 mb-4 line-clamp-3">
+
+                    <p className="text-[#cbd6ea] mb-6 line-clamp-3 text-base leading-relaxed">
                       {project.description}
                     </p>
+
                     {project.technologies_list.length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {project.technologies_list.map((tech, index) => (
+                        {project.technologies_list.map((tech, idx) => (
                           <span
-                            key={index}
-                            className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded"
+                            key={idx}
+                            className="text-xs px-3 py-1.5 rounded-lg bg-[#141b28] border border-[#2a2f3a] text-[#cbd6ea]"
                           >
                             {tech}
                           </span>
@@ -210,12 +216,10 @@ const Projects: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </section>
 
-      <div className="bg-[#0b0d17] text-white">
-        <Footer />
-      </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 

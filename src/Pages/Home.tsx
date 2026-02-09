@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "../Components/Header";
-import Footer from "../Components/Footer";
+import Footer from "../Components/footer";
 import Testimonials from "../Components/Testimonials";
 import {
   Cpu,

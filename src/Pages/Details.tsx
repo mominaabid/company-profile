@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/footer';
+import { ArrowLeft, ExternalLink, Star } from 'lucide-react';
 
 const API_BASE_URL = 'https://backendvideography.vercel.app/api';
 
@@ -38,11 +39,11 @@ const Details: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_BASE_URL}/projects/${projectId}/`);
-      
+
       if (!response.ok) {
         throw new Error('Project not found');
       }
-      
+
       const data = await response.json();
       setProject(data);
       setLoading(false);
@@ -56,10 +57,10 @@ const Details: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] flex items-center justify-center text-[#e9f1ff]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading project...</p>
+            <div className="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-[#7c3aed] mx-auto mb-6"></div>
+            <p className="text-xl text-[#cbd6ea]">Loading project details...</p>
           </div>
         </div>
         <Footer />
@@ -71,14 +72,15 @@ const Details: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="bg-gray-900 text-white min-h-screen">
-          <div className="container mx-auto py-12 px-4 text-center">
-            <p className="text-red-500 mb-4">{error || 'Project not found'}</p>
+        <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] flex items-center justify-center text-[#e9f1ff]">
+          <div className="text-center px-6 max-w-lg">
+            <p className="text-xl text-red-400 mb-8">{error || 'Project not found'}</p>
             <Link
               to="/projects"
-              className="inline-block px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+              className="inline-flex items-center gap-3 px-8 py-5 bg-[#7c3aed] text-[#0b0f16] rounded-xl font-medium hover:bg-[#8b4bff] transition shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_35px_rgba(124,58,237,0.6)]"
             >
-              &larr; Back to Projects
+              <ArrowLeft className="w-6 h-6" />
+              Back to Projects
             </Link>
           </div>
         </div>
@@ -88,99 +90,91 @@ const Details: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-[#0b0f16] to-[#070a10] text-[#e9f1ff]">
       <Header />
-      <div className="bg-gray-900 text-white min-h-screen">
-        <div className="container mx-auto py-12 px-4">
-          <Link
-            to="/projects"
-            className="text-purple-400 hover:text-purple-300 mb-6 inline-flex items-center transition"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Projects
-          </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
-            {/* Media Section */}
-            <div className="space-y-4">
-              <div className="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
-                {project.media_type === 'video' ? (
-                  <video
-                    controls
-                    className="w-full h-auto"
-                    poster={project.thumbnail_url}
-                  >
-                    <source src={project.media_url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <img
-                    src={project.media_url}
-                    alt={project.title}
-                    className="w-full h-auto object-cover"
-                  />
-                )}
-              </div>
-              
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        {/* Back Button */}
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-3 text-[#cbd6ea] hover:text-[#7c3aed] transition mb-10 group text-lg font-medium"
+        >
+          <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
+          Back to Projects
+        </Link>
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Media Section */}
+          <div className="space-y-8">
+            <div className="relative rounded-2xl overflow-hidden border border-[#2a2f3a] bg-[#0f1520] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+              {project.media_type === 'video' ? (
+                <video
+                  controls
+                  className="w-full h-auto aspect-video object-cover"
+                  poster={project.thumbnail_url}
+                >
+                  <source src={project.media_url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={project.media_url}
+                  alt={project.title}
+                  className="w-full h-auto object-cover"
+                />
+              )}
+
               {project.is_featured && (
-                <div className="flex items-center text-purple-400">
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  <span className="font-semibold">Featured Project</span>
+                <div className="absolute top-5 right-5 flex items-center gap-2 bg-[#7c3aed]/90 text-[#0b0f16] px-4 py-2 rounded-full font-medium shadow-[0_0_20px_rgba(124,58,237,0.5)] backdrop-blur-sm">
+                  <Star className="w-5 h-5 fill-current" />
+                  Featured Project
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Details Section */}
+          {/* Content Section */}
+          <div className="space-y-10">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
+                {project.title}
+              </h1>
+              {project.client && (
+                <p className="text-xl text-[#7c3aed] font-medium">
+                  Client: {project.client}
+                </p>
+              )}
+            </div>
+
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
-                {project.client && (
-                  <p className="text-purple-400 text-lg mb-4">
-                    <span className="font-semibold">Client:</span> {project.client}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-semibold mb-3">Overview</h2>
-                <p className="text-gray-300 leading-relaxed">
+                <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-[#e9f1ff]">
+                  Overview
+                </h2>
+                <p className="text-[#cbd6ea] leading-relaxed text-lg">
                   {project.description}
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-semibold mb-3">Details</h2>
-                <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-[#e9f1ff]">
+                  Project Details
+                </h2>
+                <p className="text-[#cbd6ea] leading-relaxed whitespace-pre-line text-lg">
                   {project.details}
                 </p>
               </div>
 
               {project.technologies_list.length > 0 && (
                 <div>
-                  <h2 className="text-2xl font-semibold mb-3">Technologies</h2>
-                  <div className="flex flex-wrap gap-2">
+                  <h2 className="text-2xl md:text-3xl font-semibold mb-5 text-[#e9f1ff]">
+                    Technologies
+                  </h2>
+                  <div className="flex flex-wrap gap-3">
                     {project.technologies_list.map((tech, index) => (
                       <span
                         key={index}
-                        className="bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-sm font-medium"
+                        className="px-5 py-2.5 rounded-xl bg-[#141b28] border border-[#2a2f3a] text-[#cbd6ea] text-sm font-medium"
                       >
                         {tech}
                       </span>
@@ -190,32 +184,20 @@ const Details: React.FC = () => {
               )}
 
               {project.project_url && (
-                <div className="pt-4">
+                <div className="pt-6">
                   <a
                     href={project.project_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold"
+                    className="inline-flex items-center gap-3 px-8 py-5 bg-[#7c3aed] text-[#0b0f16] rounded-xl font-medium hover:bg-[#8b4bff] transition shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_40px_rgba(124,58,237,0.6)] text-lg"
                   >
                     View Live Project
-                    <svg
-                      className="w-5 h-5 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
+                    <ExternalLink className="w-6 h-6" />
                   </a>
                 </div>
               )}
 
-              <div className="text-sm text-gray-500 pt-4 border-t border-gray-700">
+              <div className="pt-8 border-t border-[#2a2f3a] text-sm text-[#cbd6ea]/80 space-y-1">
                 <p>Created: {new Date(project.created_at).toLocaleDateString()}</p>
                 <p>Updated: {new Date(project.updated_at).toLocaleDateString()}</p>
               </div>
@@ -223,10 +205,9 @@ const Details: React.FC = () => {
           </div>
         </div>
       </div>
-   <div className="bg-[#0b0d17] text-white">
-           <Footer />
-         </div>
-    </>
+
+      <Footer />
+    </div>
   );
 };
 
