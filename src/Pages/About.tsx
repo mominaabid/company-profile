@@ -327,9 +327,6 @@ const About = () => {
                 src={getTab(activeTab)?.image_url}
                 alt={getTab(activeTab)?.title || 'Tab Image'}
                 className="w-full h-auto object-cover rounded-3xl shadow-xl border-2 border-purple-500/30 hover:border-purple-500/60 transition-all duration-500 hover:scale-105"
-                onError={() => {
-                  console.error('❌ Image failed to load:', getTab(activeTab)?.image_url);
-                }}
               />
             ) : (
               <div className="w-full h-48 sm:h-64 bg-gray-800 rounded-3xl flex flex-col items-center justify-center text-gray-400 text-sm gap-2">
@@ -342,17 +339,21 @@ const About = () => {
 
         <div className="w-full lg:w-7/12 text-center lg:text-left space-y-4 sm:space-y-6">
           <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
-            {getTab(activeTab)?.title || 'No Title'}
+            {getTab(activeTab)?.title || 'Loading...'}
           </h2>
           <div className="h-1 w-20 sm:w-24 mx-auto lg:mx-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
-          {getTab(activeTab)?.content
-            ?.split('\n')
-            .filter((p) => p.trim())
-            .map((para, i) => (
-              <p key={i} className="text-gray-300 text-base sm:text-lg leading-relaxed">
-                {para}
-              </p>
-            )) || <p className="text-gray-400">No content available</p>}
+          {getTab(activeTab)?.content ? (
+            getTab(activeTab)?.content
+              .split('\n')
+              .filter((p) => p.trim())
+              .map((para, i) => (
+                <p key={i} className="text-gray-300 text-base sm:text-lg leading-relaxed">
+                  {para}
+                </p>
+              ))
+          ) : (
+            <p className="text-gray-400">Content loading or not set yet.</p>
+          )}
         </div>
       </div>
     </div>
@@ -452,18 +453,33 @@ const About = () => {
       )}
 
       {/* CTA */}
-      {cta && (
-        <section className="py-12 sm:py-20 px-4 sm:px-8 bg-gray-900 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-5xl font-bold mb-4">{cta.title}</h2>
-            <p className="text-gray-300 text-base sm:text-lg mb-6">{cta.description}</p>
-            <button className="group inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:scale-105 transition-transform px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold">
-              <span className="text-sm sm:text-base">{cta.button_text}</span>
-              <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-            </button>
+      <section className="py-28 px-4 bg-gradient-to-b from-[#0b0f16] to-[#070a10] border-t border-[#2a2f3a]">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-bold mb-8">
+            Ready to Build <span className="text-[#7c3aed]">Intelligent</span> Software?
+          </h2>
+          <p className="text-xl text-[#cbd6ea] mb-10 max-w-3xl mx-auto">
+            Partner with us to design, develop, and scale your next-generation digital product.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <a
+              href="/contact"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-[#7c3aed] text-[#0b0f16] rounded-xl font-medium hover:bg-[#8b4bff] transition-all shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:shadow-[0_0_45px_rgba(124,58,237,0.6)]"
+            >
+              Start a Project
+              <ArrowRight className="w-6 h-6" />
+            </a>
+
+            <a
+              href="/contact"
+              className="inline-flex items-center px-10 py-5 border border-[#2a2f3a] rounded-xl font-medium hover:bg-[#0f1520] hover:border-[#7c3aed] transition-all"
+            >
+              Book a Strategy Call
+            </a>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <Footer />
     </div>
